@@ -11,27 +11,32 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.yeniproje.databinding.ActivityMainBinding
+import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: ActivityMainBinding
+    private lateinit var userViewModel: UserViewModel
 
-
-
-
+    // Favourite için liste ve fragment
+    private val favouriteItems = mutableListOf<String>() // Örnek olarak String kullanıyoruz
+    private val favouriteFragment = FavouriteFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
         setSupportActionBar(binding.toolbar) // Toolbar'ı ayarla
 
-        // Başlığı sola dayalı olarak ayarla
+        // Toolbar başlığını sola dayalı olarak ayarla
         supportActionBar?.apply {
-            title = "Home" // Başlık, her fragment için farklı olacak şekilde güncellenebilir
-            setDisplayHomeAsUpEnabled(true) // Geribildirim için "geri" ikonunu göster
+            title = "Home"
+            setDisplayHomeAsUpEnabled(true) // Geri ikonu gösterme
         }
 
         sharedPreferences = getSharedPreferences("userPrefs", MODE_PRIVATE)
@@ -40,21 +45,17 @@ class MainActivity : AppCompatActivity() {
             loadHomeFragment()
         }
 
+        // BottomNavigationView tıklamalarını dinleme
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> loadHomeFragment()
                 R.id.search -> loadSearchFragment()
                 R.id.profile -> loadProfileFragment()
+                R.id.favourite -> loadFavouriteFragment()
                 else -> false
             }
         }
-
-        
-
-
     }
-
-
 
     private fun loadHomeFragment(): Boolean {
         val fragment = HomeFragment()
@@ -70,12 +71,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadProfileFragment(): Boolean {
         val fragment = if (isUserLoggedIn()) {
-            MyProfileFragment()  // Giriş yapmışsa MyProfileFragment'i yükle
+            MyProfileFragment()  // Giriş yapmışsa MyProfileFragment
         } else {
-            ProfileFragment()  // Giriş yapmamışsa ProfileFragment'i yükle
+            ProfileFragment()  // Giriş yapmamışsa ProfileFragment
         }
         updateToolbarTitle("Profile")
         return loadFragment(fragment)
+    }
+
+    private fun loadFavouriteFragment(): Boolean {
+        updateToolbarTitle("Favourite")
+        return loadFragment(favouriteFragment)
     }
 
     private fun loadFragment(fragment: Fragment): Boolean {
@@ -97,7 +103,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.settings -> {
-                // Seçenekleri göstermek için bir metod çağıracağız
                 showProfileOptionsDialog()
                 true
             }
@@ -110,11 +115,11 @@ class MainActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setItems(options) { _, which ->
             when (which) {
-                0 -> logOut() // Çıkış işlemi
-                1 -> updateProfileInfo() // Profil güncelleme işlemi
+                0 -> logOut()
+                1 -> updateProfileInfo()
             }
         }
-        builder.show() // Diyaloğu göster
+        builder.show()
     }
 
     private fun updateProfileInfo() {
@@ -125,17 +130,18 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-
     private fun logOut() {
         sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
-        loadProfileFragment()  // Giriş yapılmadığında ProfileFragment'ı yükle
+        loadProfileFragment()  // Giriş yapılmadığında ProfileFragment yükle
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
         return true
     }
 
-
+    fun insertUser(newUser: User) {
+        userViewModel.insertUser(newUser)
+        return
+    }
 }

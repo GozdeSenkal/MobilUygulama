@@ -1,22 +1,18 @@
 package com.example.yeniproje
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.yeniproje.databinding.FragmentHomeBinding
+import androidx.fragment.app.Fragment
 
-class HomeFragment : Fragment() {
 
-    private lateinit var binding : FragmentHomeBinding
+class FavouriteFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+        // Layout dosyasını buraya bağlayın
+        return inflater.inflate(R.layout.fragment_favourite, container, false)
     }
-
 }
-

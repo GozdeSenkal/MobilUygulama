@@ -10,7 +10,6 @@ class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +41,6 @@ class ProfileFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
-
 
         return binding.root
     }
