@@ -18,7 +18,7 @@ interface UserDao {
     //@Delete: Veriyi silmek için kullanılır.
     @Delete
     suspend fun deleteUser(user: User)
-
+ //
     //@Query: SQL sorgusu çalıştırmak için kullanılır.
     @Query("SELECT * FROM user_table ORDER BY id ASC")
     fun getAllUsers(): LiveData<List<User>>
