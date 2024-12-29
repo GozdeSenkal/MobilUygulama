@@ -37,10 +37,17 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        compose = true // Jetpack Compose'u etkinleştir
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3" // Compose sürümüne uygun olarak ayarlandı
     }
 }
 
 dependencies {
+    implementation("com.google.android.gms:play-services-auth:21.3.0")
+    implementation ("androidx.room:room-runtime:2.5.1")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -48,6 +55,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.storage.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -57,6 +65,8 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
 
     //Viewmodel + livedata + lifecycle
 
@@ -66,4 +76,46 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
     kapt(libs.androidx.lifecycle.compiler)
     implementation(libs.kotlinx.coroutines.android)
+
+    // Compose
+    implementation(libs.androidx.core.ktx)
+    implementation("androidx.compose.ui:ui:1.5.3")
+    implementation("androidx.compose.material:material:1.5.3")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.5.3")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.5.3")
+    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation ("androidx.compose.foundation:foundation:1.4.0")
+    implementation ("androidx.navigation:navigation-compose:2.5.3")
+    implementation ("androidx.compose.material3:material3:1.0.0")
+
+    // UI and Utility Libraries
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.constraintlayout)
+
+    // Testing
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation("androidx.compose.material3:material3:1.2.0-alpha02")
+    implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("androidx.navigation:navigation-compose:2.7.1")
+    // Material3 güncellemesi
+    implementation("androidx.compose.material3:material3:1.3.0")
+    // Compose ve diğer bağımlılıklar
+    implementation("androidx.compose.foundation:foundation:1.5.3")
+    implementation ("androidx.compose.material3:material3:1.1.0")
+    implementation ("androidx.compose.ui:ui:1.5.0")
+    implementation ("androidx.compose.material:material:1.4.0")
+    implementation("androidx.activity:activity-compose:1.8.0")
+
+    implementation ("com.google.firebase:firebase-auth:22.1.1")
+    implementation ("com.google.firebase:firebase-database:20.3.0")
+    implementation ("com.google.android.gms:play-services-basement:18.3.0")
+    implementation ("com.github.bumptech.glide:glide:4.13.0")
+    kapt ("com.github.bumptech.glide:compiler:4.13.0")
+    implementation ("com.github.bumptech.glide:glide:4.11.0")
+
+
 }

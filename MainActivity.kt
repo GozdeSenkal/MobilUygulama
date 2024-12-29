@@ -1,38 +1,22 @@
 package com.example.yeniproje
 
-import HomeScreen
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.util.Base64
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.example.yeniproje.databinding.ActivityMainBinding
-import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
-import java.io.ByteArrayOutputStream
-
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: ActivityMainBinding
-    private lateinit var userViewModel: UserViewModel
 
     // Favourite için liste ve fragment
     private val favouriteItems = mutableListOf<String>() // Örnek olarak String kullanıyoruz
@@ -43,21 +27,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        // Bildirim izni kontrolü
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
-            }
-        }
-
-
         setSupportActionBar(binding.toolbar1) // Toolbar'ı ayarla
 
-        // Toolbar başlığını sola dayalı olarak ayarla
+        // Başlığı sola dayalı olarak ayarla
         supportActionBar?.apply {
-            title = "Home"
-            setDisplayHomeAsUpEnabled(true) // Geri ikonu gösterme
+            title = "Home" // Başlık, her fragment için farklı olacak şekilde güncellenebilir
+            setDisplayHomeAsUpEnabled(true) // Geribildirim için "geri" ikonunu göster
         }
 
         sharedPreferences = getSharedPreferences("userPrefs", MODE_PRIVATE)
@@ -66,10 +41,6 @@ class MainActivity : AppCompatActivity() {
             loadHomeFragment()
         }
 
-
-
-
-        // BottomNavigationView tıklamalarını dinleme
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> loadHomeFragment()
@@ -80,10 +51,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Bildirim butonunu dinle
         binding.fab.setOnClickListener {
             sendNotificationBroadcast()
         }
-
     }
 
     // Broadcast gönderen metot
@@ -102,16 +73,10 @@ class MainActivity : AppCompatActivity() {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
     }
 
-    private fun loadHomeFragment():Boolean{
+    private fun loadHomeFragment(): Boolean {
         val fragment = HomeFragment()
         updateToolbarTitle("Home")
         return loadFragment(fragment)
-//         Compose ekranını başlatmak için
-//        setContent {
-//            HomeScreen()
-//        }
-//        updateToolbarTitle("Home")
-//        return true
     }
 
     private fun loadSearchFragment(): Boolean {
@@ -122,9 +87,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadProfileFragment(): Boolean {
         val fragment = if (isUserLoggedIn()) {
-            MyProfileFragment()  // Giriş yapmışsa MyProfileFragment
+            MyProfileFragment()  // Giriş yapmışsa MyProfileFragment'i yükle
         } else {
-            ProfileFragment()  // Giriş yapmamışsa ProfileFragment
+            ProfileFragment()  // Giriş yapmamışsa ProfileFragment'i yükle
         }
         updateToolbarTitle("Profile")
         return loadFragment(fragment)
@@ -172,11 +137,11 @@ class MainActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setItems(options) { _, which ->
             when (which) {
-                0 -> logOut()
-                1 -> updateProfileInfo()
+                0 -> logOut() // Çıkış işlemi
+                1 -> updateProfileInfo() // Profil güncelleme işlemi
             }
         }
-        builder.show()
+        builder.show() // Diyaloğu göster
     }
 
     private fun updateProfileInfo() {
@@ -189,18 +154,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun logOut() {
         sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
-        loadProfileFragment()  // Giriş yapılmadığında ProfileFragment yükle
+        loadProfileFragment()  // Giriş yapılmadığında ProfileFragment'ı yükle
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
         return true
     }
-
-    fun insertUser(newUser: User) {
-        userViewModel.insertUser(newUser)
-        return
-    }
-
-
 }

@@ -77,7 +77,11 @@ fun RandomRecipeScreenWithShake(context: Context, lifecycleOwner: LifecycleOwner
 
                 loadRandomRecipe(database, { recipeName = it }, { materials = it }, { preparation = it }, { isLoading = it })
             }) {
-                Text("Başka Bir Tarif Göster")
+
+                
+
+                Text("Günün Tarifini Görmek İçin Telefonu Salla")
+
             }
         }
     }

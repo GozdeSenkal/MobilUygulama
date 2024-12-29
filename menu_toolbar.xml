@@ -8,7 +8,7 @@
         android:title="Settings"
         android:icon="@drawable/ic_settings"
         app:showAsAction="ifRoom" /> <!-- app:showAsAction yerine app kullanıldı -->
-    android:orderInCategory="100"
+        android:orderInCategory="100"
 
     <item
         android:id="@+id/sendNotification"
@@ -16,4 +16,3 @@
         app:showAsAction="never" />
 
 </menu>
-

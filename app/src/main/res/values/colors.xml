@@ -3,4 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="toolbar">#7AAE32</color>
+    <color name="colorAccent">#FF5722</color> <!-- FAB için turuncu renk -->
+
 </resources>

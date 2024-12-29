@@ -1,6 +1,5 @@
 package com.example.yeniproje
 
-import RegistrationFragment
 import android.app.Activity.RESULT_OK
 import android.os.Bundle
 import android.view.*
@@ -21,16 +20,40 @@ class ProfileFragment : Fragment() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        // FirebaseAuth başlat
-        firebaseAuth = FirebaseAuth.getInstance()
-
         // Giriş Yap butonunun tıklanma olayını dinleme
+        binding.loginButton.setOnClickListener {
+            // Giriş işlemi (örnek olarak kullanıcıyı giriş yaptı olarak kabul ediyoruz)
+            val sharedPreferences = requireActivity().getSharedPreferences("userPrefs", AppCompatActivity.MODE_PRIVATE)
+            sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
+
+            // Giriş yapıldığında MyProfileFragment'e geçiş
+            val fragment = MyProfileFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, fragment)
+                .addToBackStack(null)
+                .commit()
+
+            // Toolbar başlığını güncelle
+            (activity as MainActivity).supportActionBar?.title = "My Profile"
+        }
+
+        // Kayıt Ol butonuna tıklanması durumunda RegistrationFragment'e geçiş
+        binding.registerButton.setOnClickListener {
+            val fragment = RegistrationFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        //google girişi
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
@@ -39,8 +62,6 @@ class ProfileFragment : Fragment() {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            val sharedPreferences = requireActivity().getSharedPreferences("userPrefs", AppCompatActivity.MODE_PRIVATE)
-                            sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
                             Toast.makeText(context, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
                             // MyProfileFragment'e yönlendir
                             parentFragmentManager.beginTransaction()
@@ -55,14 +76,8 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        // Kayıt Ol butonuna tıklanması durumunda RegistrationFragment'e geçiş
-        binding.registerButton.setOnClickListener {
-            val fragment = RegistrationFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, fragment)
-                .addToBackStack(null)
-                .commit()
-        }
+        // Firebase Auth başlat
+        firebaseAuth = FirebaseAuth.getInstance()
 
         // Google Sign-In yapılandırması
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -72,7 +87,7 @@ class ProfileFragment : Fragment() {
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
-        // Google giriş butonuna tıklama işlemi
+        // Giriş butonuna tıklama işlemi
         binding.googleSignInButton.setOnClickListener {
             val signInIntent = googleSignInClient.signInIntent
             launcher.launch(signInIntent)
@@ -80,7 +95,6 @@ class ProfileFragment : Fragment() {
 
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -98,18 +112,12 @@ class ProfileFragment : Fragment() {
             firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener { authResult ->
                     if (authResult.isSuccessful) {
-                        // Google ile başarılı giriş yapılınca yapılacak işlemler
-                        val sharedPreferences = requireActivity().getSharedPreferences("userPrefs", AppCompatActivity.MODE_PRIVATE)
-                        sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
-                        Toast.makeText(context, "Google ile giriş başarılı!", Toast.LENGTH_SHORT).show()
-                        // MyProfileFragment'e yönlendir
-                        parentFragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainerView, MyProfileFragment())
-                            .commit()
+                        //Toast.makeText(this, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(context, "Google ile giriş başarısız: ${authResult.exception?.message}", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this, "Giriş başarısız: ${authResult.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
         }
     }
 }
+
