@@ -1,6 +1,5 @@
 package com.example.yeniproje
 
-
 data class Recipe(
     val id: String = "",  // Recipe ID
     val name: String = "",
