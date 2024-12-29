@@ -69,7 +69,20 @@
         app:layout_constraintEnd_toStartOf="@id/forgotPasswordButton"
         app:layout_constraintWidth_percent="0.30" /> <!-- Genişlik biraz daha küçük yapıldı -->
 
+
     <!-- Şifremi Unuttum Butonu -->
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleSignInButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginButton"
+        app:layout_constraintVertical_bias="0.0" />
+
     <Button
         android:id="@+id/forgotPasswordButton"
         android:layout_width="0dp"

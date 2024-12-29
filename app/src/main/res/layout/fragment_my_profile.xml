@@ -3,21 +3,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyProfileFragment">
+    tools:context=".MyProfileFragment"
+    android:paddingTop="60dp">
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <!-- İçeriği buraya ekleyin -->
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Tariflerimi Gör butonu -->
+
+        <!-- Tarif Ekle butonu -->
+
+        <Button
+            android:id="@+id/viewRecipesButton"
+            android:layout_width="282dp"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:text="Tariflerimi Gör" />
+
+        <Button
+            android:id="@+id/addRecipeButton"
+            android:layout_width="283dp"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:text="Tarif Ekle" />
+
+        <Button
+            android:id="@+id/randomRecipe"
+            android:layout_width="283dp"
+            android:layout_height="wrap_content"
+            android:text="Bugün Ne Pişirsem" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="145dp"
-        android:layout_height="73dp"
-        android:text="myprofile"
-        app:layout_anchor="@+id/linearLayout"
-        app:layout_anchorGravity="center" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

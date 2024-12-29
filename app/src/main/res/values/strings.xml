@@ -2,4 +2,7 @@
     <string name="app_name">YeniProje</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_web_client_id">108218406228-s5age2ika7g4ibb44bcthb8tl372jjui.apps.googleusercontent.com</string>
+    <string name="fab_send_notification">Bildirim Gönder</string>
+
 </resources>

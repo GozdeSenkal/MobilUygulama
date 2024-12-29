@@ -1,0 +1,88 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecipeDetailFragment"
+    android:paddingTop="60dp">
+
+
+
+    <TextView
+        android:id="@+id/recipeNameText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:padding="16dp"
+        android:text="Recipe Name"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/favouriteIcon"
+        android:layout_width="54dp"
+        android:layout_height="43dp"
+        android:src="@drawable/ic_favourite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.98"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.175" />
+
+    <TextView
+        android:id="@+id/recipeMaterialsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ingredients:"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        android:paddingStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeNameText"/>
+
+    <!-- Malzemeler Listesi -->
+    <TextView
+        android:id="@+id/recipeMaterialsText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Ingredients List"
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeMaterialsLabel"/>
+
+    <!-- Hazırlık Başlığı -->
+    <TextView
+        android:id="@+id/recipePreparationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preparation:"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        android:paddingStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeMaterialsText"/>
+
+    <!-- Hazırlık Yöntemi -->
+    <TextView
+        android:id="@+id/recipePreparationText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Preparation Instructions"
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipePreparationLabel"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

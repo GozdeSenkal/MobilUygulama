@@ -1,18 +1,32 @@
 package com.example.yeniproje
 
+import HomeScreen
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.example.yeniproje.databinding.ActivityMainBinding
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
+import java.io.ByteArrayOutputStream
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,8 +44,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+        // Bildirim izni kontrolü
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
+            }
+        }
 
-        setSupportActionBar(binding.toolbar) // Toolbar'ı ayarla
+
+        setSupportActionBar(binding.toolbar1) // Toolbar'ı ayarla
 
         // Toolbar başlığını sola dayalı olarak ayarla
         supportActionBar?.apply {
@@ -45,6 +66,9 @@ class MainActivity : AppCompatActivity() {
             loadHomeFragment()
         }
 
+
+
+
         // BottomNavigationView tıklamalarını dinleme
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -55,12 +79,39 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        binding.fab.setOnClickListener {
+            sendNotificationBroadcast()
+        }
+
     }
 
-    private fun loadHomeFragment(): Boolean {
+    // Broadcast gönderen metot
+    private fun sendNotificationBroadcast() {
+        val intent = Intent(this, NotificationReceiver::class.java)
+        sendBroadcast(intent)
+    }
+
+    // AlarmManager ile belirli bir süre sonra bildirim gönderme
+    private fun scheduleNotification() {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, NotificationReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+        val triggerTime = System.currentTimeMillis() + 60000 // 60 saniye sonra
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+    }
+
+    private fun loadHomeFragment():Boolean{
         val fragment = HomeFragment()
         updateToolbarTitle("Home")
         return loadFragment(fragment)
+//         Compose ekranını başlatmak için
+//        setContent {
+//            HomeScreen()
+//        }
+//        updateToolbarTitle("Home")
+//        return true
     }
 
     private fun loadSearchFragment(): Boolean {
@@ -103,7 +154,13 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.settings -> {
+                // Seçenekleri göstermek için bir metod çağıracağız
                 showProfileOptionsDialog()
+                true
+            }
+            R.id.sendNotification -> {
+                // Bildirim göndermek için menü seçeneği
+                sendNotificationBroadcast()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -144,4 +201,6 @@ class MainActivity : AppCompatActivity() {
         userViewModel.insertUser(newUser)
         return
     }
+
+
 }
