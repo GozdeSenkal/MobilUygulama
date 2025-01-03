@@ -6,5 +6,5 @@ data class Recipe(
     val materials: String = "",
     val preparation: String = "",
     val author: String = "",
-    val imageUrl: String = "" // New field for image URL
+    var imageUrl: String? = null // New field for image URL
 )
