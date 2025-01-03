@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     // Favourite için liste ve fragment
     private val favouriteItems = mutableListOf<String>() // Örnek olarak String kullanıyoruz
-    private val favouriteFragment = FavouriteFragment()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.home -> loadHomeFragment()
                 R.id.search -> loadSearchFragment()
                 R.id.profile -> loadProfileFragment()
-                R.id.favourite -> loadFavouriteFragment()
+                R.id.deneme -> loadFavouriteFragment()
                 else -> false
             }
         }
@@ -131,8 +131,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFavouriteFragment(): Boolean {
+        val fragment = DenemeFragment()
         updateToolbarTitle("Favourite")
-        return loadFragment(favouriteFragment)
+        return loadFragment(fragment)
     }
 
     private fun loadFragment(fragment: Fragment): Boolean {

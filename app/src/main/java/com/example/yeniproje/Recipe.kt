@@ -8,4 +8,3 @@ data class Recipe(
     val author: String = "",
     val imageUrl: String = "" // New field for image URL
 )
-

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.yeniproje.databinding.FragmentRecipeDetailBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 class RecipeDetailFragment : Fragment() {
 
@@ -32,24 +33,28 @@ class RecipeDetailFragment : Fragment() {
 
         // Handle favorite icon click
         binding.favouriteIcon.setOnClickListener {
+            val recipeId = arguments?.getString("id") // Tarife ait ID'yi doğru şekilde aldığınızdan emin olun
+            val userId = FirebaseAuth.getInstance().currentUser?.uid // Oturum açmış kullanıcının ID'si
+
             if (userId != null && recipeId != null) {
-                // User is logged in, save to favorites
-                database.child("Users").child(userId).child("favorites").child(recipeId).setValue(true)
+                // Users tablosundan kullanıcı referansını al
+                val userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId)
+
+                // Favorilere ekleme işlemi
+                val favoriteRef = userRef.child("favorites").child(recipeId)
+                favoriteRef.setValue(true)
                     .addOnSuccessListener {
-                        // Successfully added to favorites
-                        binding.favouriteIcon.setImageResource(R.drawable.ic_favourite) // Filled heart icon
-                        binding.favouriteIcon.setColorFilter(android.R.color.holo_red_dark)
-                        Toast.makeText(context, "Recipe added to favorites", Toast.LENGTH_SHORT).show()
+                        binding.favouriteIcon.setImageResource(R.drawable.ic_favourite)
+                        Toast.makeText(requireContext(), "Favorilere eklendi", Toast.LENGTH_SHORT).show()
                     }
-                    .addOnFailureListener { exception ->
-                        // Error occurred while adding to favorites
-                        Toast.makeText(context, "Failed to add to favorites", Toast.LENGTH_SHORT).show()
+                    .addOnFailureListener { e ->
+                        Toast.makeText(requireContext(), "Favorilere ekleme hatası: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
             } else {
-                // User is not logged in or recipeId is missing
-                Toast.makeText(context, "User ID or Recipe ID is missing", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Kullanıcı veya tarif bilgisi eksik!", Toast.LENGTH_SHORT).show()
             }
         }
+
 
         return binding.root
     }

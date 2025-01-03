@@ -116,6 +116,15 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.13.0")
     kapt ("com.github.bumptech.glide:compiler:4.13.0")
     implementation ("com.github.bumptech.glide:glide:4.11.0")
+    //implementation ("com.google.firebase:firebase-ml-model-interpreter:24.0.0")
+    //implementation ("com.google.firebase:firebase-ml-model-interpreter:24.0.3")
+    implementation ("com.google.firebase:firebase-ml-vision:24.0.3")
+    implementation ("com.google.firebase:firebase-ml-vision-image-label-model:20.0.0")
+    implementation ("com.google.firebase:firebase-storage:20.1.0")
+    //implementation ("com.google.firebase:firebase-appcheck-safetynet:17.0.0")
+
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.yeniproje
 
+//import AddRecipeFragment
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment

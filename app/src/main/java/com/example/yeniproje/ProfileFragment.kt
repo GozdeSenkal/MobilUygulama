@@ -14,12 +14,15 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import android.content.SharedPreferences
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var sharedPreferences: SharedPreferences
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +32,7 @@ class ProfileFragment : Fragment() {
 
         // FirebaseAuth başlat
         firebaseAuth = FirebaseAuth.getInstance()
+        sharedPreferences = requireActivity().getSharedPreferences("userPrefs", AppCompatActivity.MODE_PRIVATE)
 
         // Giriş Yap butonunun tıklanma olayını dinleme
         binding.loginButton.setOnClickListener {
@@ -39,6 +43,7 @@ class ProfileFragment : Fragment() {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
+                            saveUserCredentials(email, password)
                             val sharedPreferences = requireActivity().getSharedPreferences("userPrefs", AppCompatActivity.MODE_PRIVATE)
                             sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
                             Toast.makeText(context, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
@@ -62,6 +67,7 @@ class ProfileFragment : Fragment() {
                 .replace(R.id.fragmentContainerView, fragment)
                 .addToBackStack(null)
                 .commit()
+
         }
 
         // Google Sign-In yapılandırması
@@ -110,6 +116,14 @@ class ProfileFragment : Fragment() {
                         Toast.makeText(context, "Google ile giriş başarısız: ${authResult.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
+        }
+    }
+    private fun saveUserCredentials(email: String, password: String) {
+        // Kullanıcı bilgilerini SharedPreferences'e kaydediyoruz
+        sharedPreferences.edit().apply {
+            putString("userEmail", email)
+            putString("userPassword", password)  // Düz metin olarak kaydediliyor
+            apply()
         }
     }
 }
