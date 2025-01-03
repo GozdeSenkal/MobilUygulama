@@ -30,3 +30,18 @@ Sensor (Motion): Motion sensör kullanılarak kullanıcı telefonu salladığın
 
 Connectivity (BLE / Wifi / Cellular Network / USB / NFC): Wi-Fi veya hücresel ağ kullanılarak tariflerin API ye yüklenmesi sağlandı.
 
+
+#### 3.HAFTA : 
+
+Storage : Kullanıcının yüklediği yemek tariflerine ait görseller, uygulama özelinde (app-specific storage) ve cihazın genel depolama alanında (shared storage) güvenli bir şekilde saklandı.
+
+Local Database (Room ): Kullanıcının kendi yüklediği ve favorilerine eklediği tariflere ait temel bilgiler Room kullanılarak tutulacaktır.
+
+RESTFul API (CRUD): Kullanıcıların kullanıcı bilgilerini yönetmesini ve bilgileri görüntülemesi sağlandı.
+
+Cloud Service (AI): AI modeli ile kullanıcının çektiği fotoğrafın hangi yemek olduğu tespit edildi.
+
+
+
+
+
